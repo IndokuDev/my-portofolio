@@ -1,0 +1,13 @@
+{
+  "name": "Ahmad Raghib Zahron | @indokudev",
+  "short_name": "indokudev",
+  "description": "Web developer building fast, SEO-ready websites. Available for freelance work.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b10",
+  "theme_color": "#0b0b10",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "400x400", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "400x400", "type": "image/png" }
+  ]
+}

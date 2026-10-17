@@ -1,0 +1,41 @@
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# ---- local only: never push ----
+# originals / source assets, generators and scratch files
+_local/
+# real-life photos that are not served by the site
+public/user.png
+public/ahmad-small.webp
+public/og-image.jpg
+# secrets & machine-specific config
+.env*
+!.env.example
+*.pem
+*.key
+.vscode/
+*.log
+*.local
+.DS_Store

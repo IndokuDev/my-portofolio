@@ -1,0 +1,118 @@
+---
+import "../styles/global.css";
+import { createColorModeScript } from "@indoku/ui";
+import { site, SITE_URL } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  ogImage = site.ogImage,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE_URL).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: `${site.name} | @${site.handle}`,
+      description,
+      inLanguage: "en",
+      publisher: { "@id": `${SITE_URL}/#person` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: site.name,
+      alternateName: `@${site.handle}`,
+      jobTitle: site.role,
+      url: SITE_URL,
+      image: `${SITE_URL}${site.avatar}`,
+      email: `mailto:${site.email}`,
+      address: { "@type": "PostalAddress", addressCountry: "ID" },
+      knowsAbout: ["Web development", "Artificial intelligence", "AI engineering", "LLM applications", "AI agents", "Automation"],
+      sameAs: [site.socials.github, site.socials.linkedin, site.socials.x],
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": `${SITE_URL}/#service`,
+      name: `${site.name} - Web Development & AI Engineering`,
+      url: SITE_URL,
+      image: `${SITE_URL}${site.avatar}`,
+      email: site.email,
+      areaServed: "Worldwide",
+      provider: { "@id": `${SITE_URL}/#person` },
+      description:
+        "Freelance web development and AI engineering: websites, web apps, AI agents and automation.",
+      makesOffer: [
+        "Landing pages & business sites",
+        "Web apps & dashboards",
+        "AI agents & automation",
+        "AI-powered features",
+      ].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en" style="color-scheme: dark light;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="theme-color" content="#0b0b10" />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Icons & manifest -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${site.name} | @${site.handle}`} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} - ${site.role}`} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`${site.name} - ${site.role}`} />
+
+    <!-- Preload the first thing visitors see (LCP) -->
+    <link rel="preload" as="image" href={site.avatar} type="image/webp" fetchpriority="high" />
+
+    <!-- Avoid flash of wrong theme -->
+    <script is:inline set:html={createColorModeScript()} />
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

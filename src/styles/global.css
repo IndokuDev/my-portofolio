@@ -1,0 +1,95 @@
+/* Base */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+::selection {
+  background: #6d5dfc;
+  color: #fff;
+}
+
+/* ---------- Effects only (layout & UI live in @indoku/ui components) ---------- */
+
+.fx-float {
+  animation: fx-float 14s ease-in-out infinite;
+}
+.fx-chip {
+  animation: fx-float 6s ease-in-out infinite;
+}
+
+.fx-gradient-text {
+  background: linear-gradient(100deg, #8b7bff 0%, #22d3ee 55%, #8b7bff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: fx-shine 8s linear infinite;
+}
+.fx-nowrap {
+  white-space: nowrap;
+}
+
+.fx-fade-up {
+  opacity: 0;
+  animation: fx-fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+/* Rotating gradient ring behind the photo (pseudo-element so the photo is never tinted) */
+.fx-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg, #6d5dfc, #22d3ee, #f472b6, #6d5dfc);
+  animation: fx-hue 10s linear infinite;
+}
+
+/* Shockwave from the click point */
+.fx-burst {
+  animation: fx-burst 0.9s ease-out forwards;
+}
+.fx-pulse {
+  animation: fx-pulse 2.2s ease-in-out infinite;
+}
+
+.fx-confetti {
+  animation: fx-confetti 2.8s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes fx-confetti {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0), 110vh, 0) rotate(var(--r, 720deg)); opacity: 0.85; }
+}
+@keyframes fx-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fx-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes fx-shine {
+  to { background-position: 200% center; }
+}
+@keyframes fx-hue {
+  to { filter: hue-rotate(360deg); }
+}
+@keyframes fx-burst {
+  0% { transform: scale(0); opacity: 0.9; }
+  100% { transform: scale(40); opacity: 0; }
+}
+@keyframes fx-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fx-float, .fx-chip, .fx-gradient-text, .fx-ring::before, .fx-burst, .fx-pulse, .fx-confetti { animation: none; }
+  .fx-fade-up { animation: none; opacity: 1; }
+}
